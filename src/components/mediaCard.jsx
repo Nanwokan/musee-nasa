@@ -1,0 +1,1 @@
+chaque carte affiche une vignette, le titre, la date et le type de média
