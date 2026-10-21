@@ -22,7 +22,7 @@ export default function Home() {
         <>
           <SearchBar onSearch={(recherche) => getMediasFromNASA(recherche).then((medias) => setListeDeMedias(medias))}/>
           <Galerie medias={currentMedias}/>   
-          <Pagination totalMedias={listeDeMedias.length} mediasPerPage={mediasPerPage} setCurrentPage={setCurrentPage}/>
+          <Pagination totalMedias={listeDeMedias.length} mediasPerPage={mediasPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
         </>
     )
 }

@@ -858,12 +858,51 @@ main > form button svg {
   to { background-position: -200% 0; }
 }
 
-.pagination {
+.pagination,
+main > div:has(> button) {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   margin-top: 2.5rem;
   color: var(--text-muted);
   font-size: 0.9rem;
+}
+
+.pagination button,
+main > div:has(> button) > button {
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  transition: all 0.2s var(--ease);
+}
+
+.pagination button:hover:not(:disabled),
+main > div:has(> button) > button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* Page courante : ajouter className="active" ou aria-current="page" sur le bouton */
+.pagination button.active,
+.pagination button[aria-current="page"],
+main > div:has(> button) > button.active,
+main > div:has(> button) > button[aria-current="page"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1a1305;
+  font-weight: 700;
+}
+
+.pagination button:disabled,
+main > div:has(> button) > button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
