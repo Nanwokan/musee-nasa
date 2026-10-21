@@ -10,7 +10,7 @@ export default function SearchBar ({onSearch}) {
     }
     return (
         <form onSubmit={handleSearchSubmit}>
-            <input placeholder="saisissez au minimun trois caracteres"></input>
+            <input type="text" value={recherche} onChange={(event) => setRecherche(event.target.value)} placeholder="saisissez au minimun trois caracteres"></input>
             <button type="submit"><Search/></button>
         </form>
     )
