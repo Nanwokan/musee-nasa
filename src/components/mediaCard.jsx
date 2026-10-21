@@ -5,7 +5,7 @@ export default function MediaCard({media}) {
             <div>
                 <h4 className="title-media">Titre : {media.title}</h4>
                 <p className="date-media">Date : {media.date}</p>
-                <p className="type-media">Type : {media.type}</p>
+                <p className="type-media">Type : {media.mediaType}</p>
             </div>
         </li>
     )
