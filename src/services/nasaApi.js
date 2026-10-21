@@ -16,15 +16,13 @@ export function normalizeMedia(rawItem) {
   };
 }
 
-export function getMediasFromNASA() {
-  fetch(`${BASE_URL}/search?media_type=image,video,audio`)
+export function getMediasFromNASA(query="apollo") {
+  return fetch(`${BASE_URL}/search?q=${query}`)
     .then((res) => res.json())
     .then((data) => {
-        return data.collection.items.map((item) => {
-            normalizeMedia(item)
-        })
+      return data.collection.items.map((item) => normalizeMedia(item));
     })
     .catch((error) => {
-      console.error("NASA API request failed:", error);
+      console.error("Erreur lors de la requete NASA :", error);
     });
 }
