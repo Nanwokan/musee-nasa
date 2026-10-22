@@ -22,7 +22,12 @@ export function getMediasFromNASA(
   startYear = "1900",
   endYear = "2026",
 ) {
-  const params = new URLSearchParams(query, type, startYear, endYear);
+  const params = new URLSearchParams({
+    q: query,
+    year_start: startYear,
+    year_end: endYear,
+  });
+  if(type) {params.set("media_type", type)}
   return fetch(`${BASE_URL}/search?${params}`)
     .then((res) => res.json())
     .then((data) => {
