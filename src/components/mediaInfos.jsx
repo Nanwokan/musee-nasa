@@ -1,4 +1,9 @@
+import { useNavigate } from "react-router";
+
 export default function MediaInfos({ media }) {
+
+  const navigate = useNavigate();
+
   return (
     <section>
       <img className="img-media" src={media.thumbUrl} alt={media.title} />
@@ -8,9 +13,11 @@ export default function MediaInfos({ media }) {
         <h5 className="type-media">Type : {media.mediaType}</h5>
         <h5 className="center-media">Centre : {media.center}</h5>
         <p className="description-media">{media.description}</p>
-        <p className="keyword-media">{media.keywords}</p>
         {
             // badge key word
+            media.keywords.map((keyword)=>
+              (<button key={keyword} onClick={()=> navigate(`/?q=${keyword}`)}>{keyword}</button>)
+            )
         }
       </div>
     </section>

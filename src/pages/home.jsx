@@ -11,33 +11,14 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const mediasPerPage = 20; // 20 médias par page (fixe pour éviter l'erreur lint de variable inutilisée)
 
-  // États pour informer l'utilisateur de ce qui se passe (Palier 1 : chargement, erreur, sans résultat)
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
   // Découpage des médias pour la page actuelle
   const lastMediaIndex = currentPage * mediasPerPage;
   const firstMediaIndex = lastMediaIndex - mediasPerPage;
   const currentMedias = listeDeMedias.slice(firstMediaIndex, lastMediaIndex);
 
-  // Fonction pour charger les médias depuis l'API et gérer tous les états
-  function chargerMedias(recherche = "apollo") {
-    setIsLoading(true);
-    setError(null);
-    setCurrentPage(1); // Réinitialiser à la première page lors d'une nouvelle recherche
-
-    getMediasFromNASA(recherche)
-      .then((medias) => {
-        setListeDeMedias(medias || []);
-      })
-      .catch((err) => {
-        console.error("Échec du chargement des médias NASA :", err);
-        setError("Une erreur est survenue lors de la communication avec l'API de la NASA.");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
+  // États pour informer l'utilisateur de ce qui se passe (Palier 1 : chargement, erreur, sans résultat)
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Chargement initial au premier affichage (thème par défaut : apollo)
   useEffect(() => {
@@ -57,7 +38,7 @@ export default function Home() {
   return (
     <>
       {/* Palier 1 : Champ de recherche pour changer le thème de la galerie */}
-      <SearchBar onSearch={chargerMedias} />
+        <SearchBar onSearch={(recherche) => getMediasFromNASA(recherche).then((medias) => setListeDeMedias(medias))}/>
 
       {/* Palier 1 : L'utilisateur sait toujours ce qui se passe */}
       {/* 1. Chargement en cours */}

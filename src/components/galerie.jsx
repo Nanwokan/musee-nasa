@@ -4,9 +4,9 @@ import MediaCard from "./mediaCard";
 export default function Galerie({ medias = [] }) {
   return (
     <ul className="galerie">
-      {medias.map((media, index) => (
+      {medias.map((media) => (
         // Chaque carte reçoit son média normalisé
-        <MediaCard key={media.id || index} media={media} />
+        <MediaCard key={media.id} media={media} />
       ))}
     </ul>
   );
