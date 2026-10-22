@@ -16,8 +16,14 @@ export function normalizeMedia(rawItem) {
   };
 }
 
-export function getMediasFromNASA(query="apollo") {
-  return fetch(`${BASE_URL}/search?q=${query}`)
+export function getMediasFromNASA(
+  query = "apollo",
+  type = "",
+  startYear = "1900",
+  endYear = "2026",
+) {
+  const params = new URLSearchParams(query, type, startYear, endYear);
+  return fetch(`${BASE_URL}/search?${params}`)
     .then((res) => res.json())
     .then((data) => {
       return data.collection.items.map((item) => normalizeMedia(item));
@@ -28,10 +34,10 @@ export function getMediasFromNASA(query="apollo") {
 }
 
 export function getMediaById(id) {
-  return fetch(`${BASE_URL}/search?nasa_id=${encodeURIComponent(id)}`)
+  return fetch(`${BASE_URL}/search?nasa_id=${id}`)
     .then((res) => res.json())
     .then((data) => {
-      const item = data.collection.items[0] 
+      const item = data.collection.items[0];
       return item ? normalizeMedia(item) : null;
     })
     .catch((error) => {

@@ -4,10 +4,15 @@ import { useState, useEffect } from "react";
 import { getMediasFromNASA } from "../services/nasaApi";
 import Pagination from "../components/pagination";
 import { useSearchParams } from "react-router";
+import Filtres from "../components/filtres";
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
-const q = searchParams.get("q") ?? "apollo";
+
+  const q = searchParams.get("q") ?? "apollo"; //(thème par défaut : apollo)
+  const type = searchParams.get("media_type") ?? "";
+  const startYear = searchParams.get("year_start") ?? "1900";
+  const endYear = searchParams.get("year_end") ?? "2026";
 
   // Liste complète des médias récupérés de l'API NASA
   const [listeDeMedias, setListeDeMedias] = useState([]);
@@ -24,25 +29,40 @@ const q = searchParams.get("q") ?? "apollo";
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Chargement initial au premier affichage (thème par défaut : apollo)
+  function updateFilter(name, value) {
+    const newParams = new URLSearchParams(searchParams);
+
+    newParams.set(name, value);
+
+    setSearchParams(newParams);
+  }
+
+  // Chargement initial au premier affichage
   useEffect(() => {
-    getMediasFromNASA(q)
+    getMediasFromNASA(q, type, startYear, endYear)
       .then((medias) => {
         setListeDeMedias(medias || []);
       })
       .catch((err) => {
         console.error("Échec du chargement initial :", err);
-        setError("Une erreur est survenue lors de la communication avec l'API de la NASA.");
+        setError(
+          "Une erreur est survenue lors de la communication avec l'API de la NASA.",
+        );
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, [q]);
+  }, [q, type, startYear, endYear]);
 
   return (
     <>
       {/* Palier 1 : Champ de recherche pour changer le thème de la galerie */}
-        <SearchBar onSearch={(recherche) => setSearchParams({q: recherche})}/>
+      <SearchBar onSearch={(recherche) => setSearchParams({ q: recherche })} />
+      <Filtres
+        onTypeChange={(value) => updateFilter("media_type", value)}
+        onStartYearChange={(value) => updateFilter("year_start", value)}
+        onEndYearChange={(value) => updateFilter("year_end", value)}
+      />
 
       {/* Palier 1 : L'utilisateur sait toujours ce qui se passe */}
       {/* 1. Chargement en cours */}
@@ -74,7 +94,7 @@ const q = searchParams.get("q") ?? "apollo";
       {!isLoading && !error && listeDeMedias.length > 0 && (
         <>
           <Galerie medias={currentMedias} />
-          <Pagination 
+          <Pagination
             totalMedias={listeDeMedias.length}
             mediasPerPage={mediasPerPage}
             currentPage={currentPage}

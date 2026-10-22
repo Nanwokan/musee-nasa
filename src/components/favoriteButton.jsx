@@ -23,7 +23,7 @@ export default function FavoriteButton({ media, onToggle }) {
       onClick={handleClick}
     >
       {/* L'icône change selon que le média est favori ou non. */}
-      {isFavorite ? <HeartPlus/> : <Heart/>}
+      {isFavorite ? <Heart/> : <HeartPlus/>}
     </button>
   );
 }
