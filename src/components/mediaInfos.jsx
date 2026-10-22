@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { getPlayableMediaUrl } from "../services/nasaApi";
+import { getAssetMedia, getPlayableMediaUrl } from "../services/nasaApi";
 
 export default function MediaInfos({ media }) {
+
+  const [imageUrl, setImageUrl] = useState("");
 
   const navigate = useNavigate();
   // Garde l'adresse du lecteur et l'éventuel message d'erreur.
@@ -10,31 +12,33 @@ export default function MediaInfos({ media }) {
   const mediaId = media.id;
   const mediaType = media.mediaType;
 
-  useEffect(() => {
-    // Les images utilisent leur vignette ; seuls les sons et vidéos ont besoin d'un fichier à lire.
-    if (mediaType !== "video" && mediaType !== "audio") return;
+useEffect(() => {
+  if (mediaType === "image") {
+    getAssetMedia(media)
+      .then((url) => {
+        setImageUrl(url);
+      })
+      .catch((error) => {
+        console.error("Impossible de charger l'image :", error);
+        setImageUrl(media.thumbUrl);
+      });
+  }
 
-    let active = true;
+  if (mediaType === "video" || mediaType === "audio") {
     getPlayableMediaUrl({ id: mediaId, mediaType })
       .then((url) => {
-        if (active) setPlayer({ mediaId, url, error: "" });
+        setPlayer({ mediaId, url, error: "" });
       })
       .catch((error) => {
         console.error("Impossible de charger le média :", error);
-        if (active) {
-          setPlayer({
-            mediaId,
-            url: "",
-            error: "Le lecteur de ce média est indisponible.",
-          });
-        }
+        setPlayer({
+          mediaId,
+          url: "",
+          error: "Le lecteur de ce média est indisponible.",
+        });
       });
-
-    return () => {
-      // Ignore la réponse si on a quitté cette fiche avant la fin du chargement.
-      active = false;
-    };
-  }, [mediaId, mediaType]);
+  }
+}, [mediaId, mediaType]);
 
   const currentPlayer = player.mediaId === media.id ? player : null;
 
@@ -42,7 +46,11 @@ export default function MediaInfos({ media }) {
     <section>
       {/* Affiche le lecteur adapté, ou garde l'image pour les médias image. */}
       {media.mediaType === "image" ? (
-        <img className="img-media" src={media.thumbUrl} alt={media.title} />
+        <img
+  className="img-media"
+  src={imageUrl || media.thumbUrl}
+  alt={media.title}
+/>
       ) : currentPlayer?.url && media.mediaType === "video" ? (
         // controls affiche les commandes de lecture ; poster montre la vignette avant le démarrage.
         <video

@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router";
 import HeaderTop from "./components/header";
 import MediaDetails from "./pages/detail";
 import Favoris from "./pages/favoris";
+import ErrorPage from "./pages/errorPage";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
               <MediaDetails
               />
             }/>
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </main>
     </>

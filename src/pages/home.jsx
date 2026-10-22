@@ -16,8 +16,7 @@ export default function Home() {
 
   // Liste complète des médias récupérés de l'API NASA
   const [listeDeMedias, setListeDeMedias] = useState([]);
-  // Gestion de la pagination (Palier 1 : la galerie est paginée)
-  const [currentPage, setCurrentPage] = useState(1);
+  const currentPage = Math.max(1, parseInt(searchParams.get("page"), 10) || 1);
   const mediasPerPage = 20; // 20 médias par page (fixe pour éviter l'erreur lint de variable inutilisée)
 
   // Découpage des médias pour la page actuelle
@@ -29,12 +28,25 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  function setCurrentPage(page) {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("page", page);
+    setSearchParams(newParams);
+  }
+
+  function loadWithParams(params) {
+    if (new URLSearchParams(params).toString() === searchParams.toString()) return;
+    setIsLoading(true);
+    setError(null);
+    setSearchParams(params);
+  }
+
   function updateFilter(name, value) {
     const newParams = new URLSearchParams(searchParams);
 
     newParams.set(name, value);
 
-    setSearchParams(newParams);
+    loadWithParams(newParams);
   }
 
   // Chargement initial au premier affichage
@@ -57,7 +69,7 @@ export default function Home() {
   return (
     <>
       {/* Palier 1 : Champ de recherche pour changer le thème de la galerie */}
-      <SearchBar onSearch={(recherche) => setSearchParams({ q: recherche })} />
+      <SearchBar onSearch={(recherche) => loadWithParams({ q: recherche })} />
       <Filtres
         onTypeChange={(value) => updateFilter("media_type", value)}
         onStartYearChange={(value) => updateFilter("year_start", value)}

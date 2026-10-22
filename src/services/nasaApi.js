@@ -29,12 +29,12 @@ export function getMediasFromNASA(
   });
   if(type) {params.set("media_type", type)}
   return fetch(`${BASE_URL}/search?${params}`)
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) throw new Error(`Erreur HTTP : ${res.status}`);
+      return res.json();
+    })
     .then((data) => {
       return data.collection.items.map((item) => normalizeMedia(item));
-    })
-    .catch((error) => {
-      console.error("Erreur lors de la requete NASA :", error);
     });
 }
 
@@ -47,6 +47,29 @@ export function getMediaById(id) {
     })
     .catch((error) => {
       console.error("Erreur lors de la requete NASA :", error);
+    });
+}
+
+export function getAssetMedia(media) {
+  return fetch(`${BASE_URL}/asset/${encodeURIComponent(media.id)}`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Erreur HTTP : ${res.status}`);
+      }
+
+      return res.json();
+    })
+    .then((data) => {
+      const files = (data.collection?.items || [])
+        .map((item) => item.href)
+        .filter((href) => {
+          return href && /\.(jpg|jpeg|png)$/i.test(href.split("?")[0]);
+        });
+
+      const largeImage = files.find((href) => href.includes("~large."));
+      const mediumImage = files.find((href) => href.includes("~medium."));
+
+      return largeImage || mediumImage || media.thumbUrl;
     });
 }
 

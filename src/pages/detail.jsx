@@ -2,18 +2,29 @@ import { useEffect, useState } from "react";
 import MediaInfos from "../components/mediaInfos";
 import { getMediaById } from "../services/nasaApi";
 import { useParams } from "react-router";
+import ErrorPage from "./errorPage";
 
 export default function MediaDetails() {
   const { id } = useParams();
-  const [media, setMedia] = useState(null);
+  const [result, setResult] = useState(null);
 
   useEffect(() => {
     getMediaById(id)
-      .then(setMedia)
-      .catch((error) => console.error("Failed to load NASA media:", error));
+    .then((media) => {
+      setResult({ id, media });
+    })
+    .catch(() => {
+      setResult({ id, media: null });
+    });
   }, [id]);
 
-  if (!media) return <h2>Vous possédez visiblement des informations que même la NASA n’a pas. 👀</h2>;
+  if (result?.id !== id) {
+    return <div className="state" role="status">Chargement du média...</div>;
+  }
 
-  return <MediaInfos media={media} />;
+  if (!result.media) {
+    return <ErrorPage title="Média introuvable" message="Aucun média NASA ne correspond à cet identifiant." />;
+  }
+
+  return <MediaInfos media={result.media} />;
 }
