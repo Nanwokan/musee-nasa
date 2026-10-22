@@ -1,11 +1,12 @@
 import { Link } from "react-router";
+import FavoriteButton from "./favoriteButton";
 // Palier 1 : Carte d'un média
 // Attendus respectés :
 // - vignette (thumbUrl)
 // - titre
 // - date
 // - type de média
-export default function MediaCard({ media }) {
+export default function MediaCard({ media, onFavoriteChange }) {
   return (
         <li className="card">
             <Link to={`/medias/${media.id}`}>
@@ -16,6 +17,7 @@ export default function MediaCard({ media }) {
                     <p className="type-media">{media.mediaType}</p>
                 </div>            
             </Link>
+            <FavoriteButton media={media} onToggle={onFavoriteChange} />
         </li>
   );
 }
