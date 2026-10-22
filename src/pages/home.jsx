@@ -3,8 +3,12 @@ import Galerie from "../components/galerie";
 import { useState, useEffect } from "react";
 import { getMediasFromNASA } from "../services/nasaApi";
 import Pagination from "../components/pagination";
+import { useSearchParams } from "react-router";
 
 export default function Home() {
+  const [searchParams, setSearchParams] = useSearchParams();
+const q = searchParams.get("q") ?? "apollo";
+
   // Liste complète des médias récupérés de l'API NASA
   const [listeDeMedias, setListeDeMedias] = useState([]);
   // Gestion de la pagination (Palier 1 : la galerie est paginée)
@@ -22,7 +26,7 @@ export default function Home() {
 
   // Chargement initial au premier affichage (thème par défaut : apollo)
   useEffect(() => {
-    getMediasFromNASA("apollo")
+    getMediasFromNASA(q)
       .then((medias) => {
         setListeDeMedias(medias || []);
       })
@@ -33,12 +37,12 @@ export default function Home() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [q]);
 
   return (
     <>
       {/* Palier 1 : Champ de recherche pour changer le thème de la galerie */}
-        <SearchBar onSearch={(recherche) => getMediasFromNASA(recherche).then((medias) => setListeDeMedias(medias))}/>
+        <SearchBar onSearch={(recherche) => setSearchParams({q: recherche})}/>
 
       {/* Palier 1 : L'utilisateur sait toujours ce qui se passe */}
       {/* 1. Chargement en cours */}
