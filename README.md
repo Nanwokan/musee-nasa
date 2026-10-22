@@ -2,6 +2,11 @@
 
 > Application d'exposition numérique construite sur la photothèque publique de la NASA.
 
+## Pourquoi React et Vite ?
+React construit l’interface avec des composants réutilisables et met à jour les pages quand les données changent, par exemple après une recherche ou quand on ajoute un favori.
+
+Vite sert à lancer le projet rapidement pendant le développement, puis à préparer les fichiers pour le déploiement.
+
 ## 🎯 Palier 1 : La galerie
 
 Voici ce qui a été réalisé, expliqué simplement :
