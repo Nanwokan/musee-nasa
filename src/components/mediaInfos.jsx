@@ -8,7 +8,7 @@ export default function MediaInfos({ media }) {
         <h5 className="type-media">Type : {media.mediaType}</h5>
         <h5 className="center-media">Centre : {media.center}</h5>
         <p className="description-media">{media.description}</p>
-        <span
+        <p className="keyword-media">{media.keywords}</p>
         {
             // badge key word
         }
