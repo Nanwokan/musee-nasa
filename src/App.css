@@ -320,7 +320,15 @@ main > form button svg {
   transform: scale(1.06);
 }
 
-.card > div {
+/* Le lien couvre toute la carte : il porte la mise en colonne */
+.card > a {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  color: inherit;
+}
+
+.card > a > div {
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -450,6 +458,92 @@ main > form button svg {
 }
 
 /* ---------- 6. Fiche détail ---------- */
+
+/* Balisage actuel de MediaInfos : <section> > img.img-media + div > h4 / h5 / h5 / h5 / p */
+main > section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(300px, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+}
+
+main > section > .img-media {
+  aspect-ratio: auto;
+  max-height: 78vh;
+  object-fit: contain;
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* Cartel de musée : fond sombre, filet doré */
+main > section > div {
+  position: sticky;
+  top: 5.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+}
+
+main > section .title-media {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1.2;
+  overflow: visible;
+}
+
+main > section .date-media,
+main > section .center-media {
+  margin: 0;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+main > section .type-media {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-body);
+}
+
+main > section .description-media {
+  margin: 0.8rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  line-height: 1.7;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+/* Message affiché quand le média est introuvable */
+main > h2 {
+  max-width: 32ch;
+  margin: 4rem auto;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  main > section {
+    grid-template-columns: 1fr;
+  }
+
+  main > section > div {
+    position: static;
+  }
+}
+
+/* Variante à classes explicites (si tu renommes le balisage) */
 
 .detail {
   display: grid;

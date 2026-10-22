@@ -48,3 +48,15 @@ export function getMediasFromNASA(query = "apollo") {
       throw error;
     });
 }
+
+export function getMediaById(id) {
+  return fetch(`${BASE_URL}/search?nasa_id=${encodeURIComponent(id)}`)
+    .then((res) => res.json())
+    .then((data) => {
+      const item = data.collection.items[0] 
+      return item ? normalizeMedia(item) : null;
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la requete NASA :", error);
+    });
+}
