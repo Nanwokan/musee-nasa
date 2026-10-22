@@ -38,3 +38,34 @@ export function getMediaById(id) {
       console.error("Erreur lors de la requete NASA :", error);
     });
 }
+
+// Récupère l'adresse du fichier audio ou vidéo associé au média.
+export function getPlayableMediaUrl(media) {
+
+  // L'API NASA renvoie les fichiers disponibles pour cet identifiant de média.
+  return fetch(`${BASE_URL}/asset/${encodeURIComponent(media.id)}`)
+    .then((res) => {
+      if (!res.ok) throw new Error(`Erreur HTTP : ${res.status}`);
+      return res.json();
+    })
+    .then((data) => {
+      const isVideo = media.mediaType === "video";
+      const extension = isVideo ? /\.mp4$/i : /\.(mp3|m4a|wav|ogg)$/i;
+      // Garde seulement les fichiers que le lecteur vidéo ou audio peut utiliser.
+      const files = (data.collection?.items || [])
+        .map((item) => item.href)
+        .filter((href) => href && extension.test(href.split("?")[0]));
+
+      // Privilégie une version légère pour que la lecture démarre plus vite.
+      const preferredVersions = isVideo ? ["~small.", "~medium."] : ["~64k.", "~128k."];
+      const file = preferredVersions
+        .map((version) => files.find((href) => href.includes(version)))
+        .find(Boolean) || files[0];
+
+      if (!file) throw new Error("Aucun fichier audio ou vidéo disponible.");
+      // Convertit les liens HTTP en HTTPS pour la lecture dans l'application.
+      return file.startsWith("http://")
+        ? file.replace("http://", "https://")
+        : file;
+    });
+}
