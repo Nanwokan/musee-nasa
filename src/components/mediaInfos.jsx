@@ -44,7 +44,7 @@ useEffect(() => {
 
   return (
     <section>
-      {/* Affiche le lecteur adapté, ou garde l'image pour les médias image. */}
+      {}
       {media.mediaType === "image" ? (
         <img
   className="img-media"

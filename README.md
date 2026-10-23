@@ -7,34 +7,85 @@ React construit l’interface avec des composants réutilisables et met à jour 
 
 Vite sert à lancer le projet rapidement pendant le développement, puis à préparer les fichiers pour le déploiement.
 
-## 🎯 Palier 1 : La galerie
+## 🎯 Palier visé : Palier 3 – Images, vidéos et sons (14/20)
 
-Voici ce qui a été réalisé, expliqué simplement :
+### État actuel du projet
+Le projet est validé jusqu’au palier 3. Les fonctionnalités suivantes sont déjà fonctionnelles.
+
+## 🧩 Palier 1 : La galerie
 
 ### 1. 🖼️ Les cartes médias (`MediaCard`)
 Chaque média trouvé dans la photothèque est présenté dans une carte claire contenant :
-* Une **vignette** (l'image d'aperçu du média).
-* Le **titre**.
-* La **date** de publication.
-* Le **type** de média (`image`, `video` ou `audio`).
+* une vignette,
+* le titre,
+* la date de publication,
+* le type de média (`image`, `video` ou `audio`).
 
 ### 2. 🔍 La barre de recherche (`SearchBar`)
-Un champ de recherche situé en haut de la page permet de changer le thème de la galerie à n'importe quel moment (par exemple en tapant *Mars*, *Apollo*, *Hubble*, *Moon*...).
+Un champ de recherche permet de modifier le thème de la galerie à tout moment.
 
 ### 3. 📄 La pagination (`Pagination`)
-Pour que la page reste fluide et agréable à parcourir :
-* Les résultats sont découpés en pages de **20 cartes**.
-* Des boutons numérotés permettent de naviguer de page en page.
-* Dès qu'on lance une nouvelle recherche, la pagination se remet automatiquement à la page 1.
+* Les résultats sont découpés en pages de 20 cartes.
+* La navigation entre les pages est possible.
+* Une nouvelle recherche réinitialise la pagination à la page 1.
 
-### 4. 💬 Les messages d'état pour l'utilisateur
-L'utilisateur n'est jamais laissé sans retour visuel :
-* **Pendant le chargement :** un cercle animé  indique que la requête est en cours auprès de la NASA.
-* **Si aucun résultat n'existe :** un message indique clairement qu'aucun média ne correspond à la saisie.
-* **En cas de panne ou d'erreur réseau :** un message d'alerte signale le problème de connexion.
+### 4. 💬 Messages d’état utilisateur
+* Chargement en cours,
+* erreur API,
+* aucune recherche correspondante,
+* affichage d’un message explicite quand la requête échoue.
 
-### 5. ⚙️ La simplification des données (`nasaApi.js`)
-L'API de la NASA renvoie des données très complexes et imbriquées. Une fonction simple (`normalizeMedia`) extrait uniquement l'essentiel pour fournir des données propres aux composants React.
+### 5. ⚙️ Transformation des données (`normalizeMedia`)
+Les réponses de l’API NASA sont simplifiées avant d’être envoyées aux composants, pour éviter de manipuler des structures compliquées dans l’interface.
+
+---
+
+## 📝 Palier 2 : Les fiches
+
+Chaque média possède une page de détail accessible via son propre identifiant.
+
+### Réalisé
+* affichage de la grande image ou du média concerné,
+* titre,
+* date,
+* centre NASA,
+* description complète,
+* mots-clés,
+* clic sur un mot-clé pour relancer une recherche dans la galerie,
+* gestion d’une page d’erreur quand un média est introuvable.
+
+---
+
+## 🎧 Palier 3 : Images, vidéos et sons
+
+### Réalisé
+* filtres par type de média : image, vidéo, son,
+* filtres par période avec année de début et année de fin,
+* recherche, filtres et page courante conservés dans l’URL via `useSearchParams`,
+* lecture directe de vidéos et de fichiers audio dans l’application,
+* liste de favoris sauvegardée dans le navigateur via `localStorage`,
+* page “Mes favoris” pour afficher les médias enregistrés.
+
+### Points techniques
+* `getMediasFromNASA()` centralise les appels vers l’API NASA.
+* `getAssetMedia()` sélectionne une version de fichier image adaptée à l’affichage.
+* `getPlayableMediaUrl()` récupère le bon fichier audio ou vidéo pour le lecteur.
+* `toggleFavorite()` et `getFavorites()` assurent la persistance des favoris.
+
+---
+
+## ✅ Ce qui est terminé
+- Galerie de médias
+- Recherche
+- Pagination
+- Messages d’état
+- Fiches détaillées
+- Filtres par type et date
+- Lecture audio/vidéo
+- Favoris persistants
+- Palier 3 validé
+
+Ce que nous avons ajouter apres la presentation orale 
 
 ---
 
@@ -57,6 +108,9 @@ L'application est disponible sur : **http://localhost:5173/**
 
 ## 📁 Organisation simple du code
 
-* `src/services/nasaApi.js` : Gère les appels vers la NASA et simplifie les données reçues.
-* `src/pages/home.jsx` : Page d'accueil qui relie la recherche, la galerie et la pagination.
-* `src/components/` : Les éléments réutilisables de l'interface (`header`, `searchBar`, `galerie`, `mediaCard`, `pagination`).
+* `src/services/nasaApi.js` : appels vers l’API NASA et normalisation des données.
+* `src/pages/home.jsx` : page d’accueil avec recherche, filtres, galerie et pagination.
+* `src/pages/detail.jsx` : page de détail du média sélectionné.
+* `src/pages/favoris.jsx` : liste des médias favoris enregistrés.
+* `src/components/` : éléments visuels réutilisables de l’application.
+
