@@ -6,9 +6,7 @@
 React construit l’interface avec des composants réutilisables et met à jour les pages quand les données changent, par exemple après une recherche ou quand on ajoute un favori.
 
 Vite sert à lancer le projet rapidement pendant le développement, puis à préparer les fichiers pour le déploiement.
-
-### État actuel du projet
-Le projet est validé jusqu’au palier 3. Les fonctionnalités suivantes sont déjà fonctionnelles.
+### Avant la presentation orale nous etions au pallier 3 et apres la presentation orale nous avons continuer avec le pallier 4 
 
 ## 🧩 Palier 1 : La galerie
 
@@ -70,22 +68,24 @@ Chaque média possède une page de détail accessible via son propre identifiant
 * `getPlayableMediaUrl()` récupère le bon fichier audio ou vidéo pour le lecteur.
 * `toggleFavorite()` et `getFavorites()` assurent la persistance des favoris.
 
----
+### Ce que nous avons ajouté après la présentation orale
 
-## ✅ Ce qui est terminé
-- Galerie de médias
-- Recherche
-- Pagination
-- Messages d’état
-- Fiches détaillées
-- Filtres par type et date
-- Lecture audio/vidéo
-- Favoris persistants
-- Palier 3 validé
+## 🪐 Palier 4 : les salles du musée
 
-###Ce que nous avons ajouter apres la presentation orale 
+La page [Salles](./src/pages/salles.jsx) présente quatre thèmes : Apollo, Hubble, Mars et la Station spatiale internationale. Chaque carte a un nom et une courte introduction choisis pour le projet ; son image est chargée par son composant depuis les résultats de recherche de la NASA.
+
+En ouvrant une salle, on voit les médias NASA associés à son thème, classés du plus ancien au plus récent. Un clic sur un média ouvre sa fiche détaillée existante.
+
+### Améliorations récentes
+
+* La page des salles affiche les cartes dans une grille adaptée à la taille de l’écran.
+* Les descriptions des salles sont courtes et écrites en français.
+* Les fiches de salle et de média ont un bouton « Retour » en haut à gauche. Il ramène à la page précédente.
 
 
+### Tests automatisés
+
+Les sept tests vérifient que les données NASA sont bien préparées, que les salles et leurs images s’affichent et que les médias d’une salle sont classés par date.
 
 ---
 
@@ -100,17 +100,30 @@ npm run dev
 
 # 3. Vérifier la propreté du code (ESLint)
 npm run lint
+
+# 4. Lancer tous les tests Vitest une fois
+npm test
 ```
 
 L'application est disponible sur : **http://localhost:5173/**
+
+`npm test` lance tous les tests une fois. Pour les relancer automatiquement après chaque modification, utiliser :
+
+```bash
+npx vitest
+```
 
 ---
 
 ## 📁 Organisation simple du code
 
 * `src/services/nasaApi.js` : appels vers l’API NASA et normalisation des données.
+* `src/services/nasaApi.test.js` : tests sur la transformation et la recherche NASA.
 * `src/pages/home.jsx` : page d’accueil avec recherche, filtres, galerie et pagination.
 * `src/pages/detail.jsx` : page de détail du média sélectionné.
+* `src/pages/salles.jsx` : page qui présente toutes les salles du musée.
+* `src/components/sallesCard.jsx` : carte d’une salle, avec son image chargée depuis la NASA.
+* `src/components/salleDetail.jsx` : médias et frise chronologique d’une salle.
+* `src/data/salles.js` : noms, courtes descriptions et recherches NASA associées aux salles.
 * `src/pages/favoris.jsx` : liste des médias favoris enregistrés.
 * `src/components/` : éléments visuels réutilisables de l’application.
-

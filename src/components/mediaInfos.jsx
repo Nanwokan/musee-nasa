@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { getAssetMedia, getPlayableMediaUrl } from "../services/nasaApi";
 
 export default function MediaInfos({ media }) {
@@ -7,6 +7,7 @@ export default function MediaInfos({ media }) {
   const [imageUrl, setImageUrl] = useState("");
 
   const navigate = useNavigate();
+  const location = useLocation();
   // Garde l'adresse du lecteur et l'éventuel message d'erreur.
   const [player, setPlayer] = useState({ mediaId: "", url: "", error: "" });
   const mediaId = media.id;
@@ -44,6 +45,13 @@ useEffect(() => {
 
   return (
     <section>
+      <button
+        className="back-button media-detail__back"
+        type="button"
+        onClick={() => navigate(location.key === "default" ? "/" : -1)}
+      >
+        ← Retour
+      </button>
       {}
       {media.mediaType === "image" ? (
         <img
