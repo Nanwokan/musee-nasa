@@ -14,17 +14,17 @@ export default function Home() {
   const startYear = searchParams.get("year_start") ?? "1900";
   const endYear = searchParams.get("year_end") ?? "2026";
 
-  // Liste complète des médias récupérés de l'API NASA
+  
   const [listeDeMedias, setListeDeMedias] = useState([]);
   const currentPage = Math.max(1, parseInt(searchParams.get("page"), 10) || 1);
-  const mediasPerPage = 20; // 20 médias par page (fixe pour éviter l'erreur lint de variable inutilisée)
+  const mediasPerPage = 20;
 
-  // Découpage des médias pour la page actuelle
+  
   const lastMediaIndex = currentPage * mediasPerPage;
   const firstMediaIndex = lastMediaIndex - mediasPerPage;
   const currentMedias = listeDeMedias.slice(firstMediaIndex, lastMediaIndex);
 
-  // États pour informer l'utilisateur de ce qui se passe (Palier 1 : chargement, erreur, sans résultat)
+  
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
