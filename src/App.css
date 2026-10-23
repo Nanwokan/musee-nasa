@@ -74,17 +74,13 @@ header nav strong {
   letter-spacing: 0.02em;
 }
 
-/* Petit point rouge NASA devant le nom du musée */
-header nav strong::before {
-  content: "";
+header nav strong .brand-icon {
   display: inline-block;
-  width: 0.5em;
-  height: 0.5em;
+  width: 1em;
+  height: 1em;
   margin-right: 0.6em;
-  border-radius: 50%;
-  background: var(--nasa-red);
-  box-shadow: 0 0 12px var(--nasa-red);
-  vertical-align: 0.1em;
+  color: var(--accent);
+  vertical-align: -0.15em;
 }
 
 header nav a {
