@@ -12,34 +12,35 @@ export default function MediaInfos({ media }) {
   const [player, setPlayer] = useState({ mediaId: "", url: "", error: "" });
   const mediaId = media.id;
   const mediaType = media.mediaType;
+  const thumbUrl = media.thumbUrl;
 
-useEffect(() => {
-  if (mediaType === "image") {
-    getAssetMedia(media)
-      .then((url) => {
-        setImageUrl(url);
-      })
-      .catch((error) => {
-        console.error("Impossible de charger l'image :", error);
-        setImageUrl(media.thumbUrl);
-      });
-  }
-
-  if (mediaType === "video" || mediaType === "audio") {
-    getPlayableMediaUrl({ id: mediaId, mediaType })
-      .then((url) => {
-        setPlayer({ mediaId, url, error: "" });
-      })
-      .catch((error) => {
-        console.error("Impossible de charger le média :", error);
-        setPlayer({
-          mediaId,
-          url: "",
-          error: "Le lecteur de ce média est indisponible.",
+  useEffect(() => {
+    if (mediaType === "image") {
+      getAssetMedia({ id: mediaId, thumbUrl })
+        .then((url) => {
+          setImageUrl(url);
+        })
+        .catch((error) => {
+          console.error("Impossible de charger l'image :", error);
+          setImageUrl(thumbUrl);
         });
-      });
-  }
-}, [mediaId, mediaType]);
+    }
+
+    if (mediaType === "video" || mediaType === "audio") {
+      getPlayableMediaUrl({ id: mediaId, mediaType })
+        .then((url) => {
+          setPlayer({ mediaId, url, error: "" });
+        })
+        .catch((error) => {
+          console.error("Impossible de charger le média :", error);
+          setPlayer({
+            mediaId,
+            url: "",
+            error: "Le lecteur de ce média est indisponible.",
+          });
+        });
+    }
+  }, [mediaId, mediaType, thumbUrl]);
 
   const currentPlayer = player.mediaId === media.id ? player : null;
 
