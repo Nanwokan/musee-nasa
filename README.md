@@ -7,8 +7,6 @@ React construit l’interface avec des composants réutilisables et met à jour 
 
 Vite sert à lancer le projet rapidement pendant le développement, puis à préparer les fichiers pour le déploiement.
 
-## 🎯 Palier visé : Palier 3 – Images, vidéos et sons (14/20)
-
 ### État actuel du projet
 Le projet est validé jusqu’au palier 3. Les fonctionnalités suivantes sont déjà fonctionnelles.
 
@@ -85,7 +83,8 @@ Chaque média possède une page de détail accessible via son propre identifiant
 - Favoris persistants
 - Palier 3 validé
 
-Ce que nous avons ajouter apres la presentation orale 
+###Ce que nous avons ajouter apres la presentation orale 
+
 
 ---
 
