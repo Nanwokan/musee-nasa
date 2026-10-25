@@ -3,11 +3,58 @@
 
 > Application d'exposition numérique construite sur la photothèque publique de la NASA.
 
+## Binôme
+
+* Nanwokan Ouattara
+* Clyfton Gadegbeku
+
+## Palier visé et état des paliers
+
+Le projet vise le **palier 6**.
+
+| Palier | État |
+| --- | --- |
+| 1 - Galerie | Validé |
+| 2 - Fiches | Validé |
+| 3 - Images, vidéos et sons | Validé |
+| 4 - Salles du musée | Validé |
+| 5 - Commissaire d'exposition | Validé |
+| 6 - Visite | En cours |
+
+## Choix techniques importants
+
+* **React et Vite** construisent l'interface et la version de production.
+* **React Router** gère les fiches médias, les salles, les expositions et les liens partagés.
+* Les appels à l'API NASA sont centralisés dans `src/services/nasaApi.js`. La fonction `normalizeMedia()` transforme chaque réponse en objet simple avant son affichage.
+* `useSearchParams` conserve la recherche, les filtres et la pagination dans l'adresse URL.
+* `localStorage` conserve les favoris et les expositions entre deux visites.
+* **Lucide React** fournit les icônes de l'interface.
+* **Vitest** et **Testing Library** testent la normalisation des données NASA et les écrans des salles.
+* `vercel.json` redirige les routes vers `index.html`, ce qui permet d'ouvrir directement une fiche ou une exposition sur Vercel.
+
+## Difficultés rencontrées et solutions
+
+### Une fiche valide affichait brièvement un message d'erreur
+
+**Symptôme.** En ouvrant la fiche d'un média NASA existant, le message « Vous possédez visiblement des informations que même la NASA n'a pas » apparaissait avant la fiche.
+
+**Cause.** L'état `media` était initialisé à `null`. Au premier rendu, `useEffect` n'avait pas encore lancé ou terminé la requête, mais la condition `if (!media)` interprétait déjà ce `null` comme un média introuvable.
+
+**Solution.** La page conserve maintenant un résultat lié à l'identifiant demandé : `{ id, media }`. Tant que ce résultat n'existe pas ou qu'il concerne un autre identifiant, elle affiche « Chargement du média... ». La page d'erreur est réservée à une réponse terminée sans média.
+
+### Une erreur API était confondue avec une recherche sans résultat
+
+**Symptôme.** Lors d'un problème réseau ou d'une réponse NASA invalide, la galerie pouvait afficher « Aucun média trouvé » au lieu d'un message d'erreur.
+
+**Cause.** `getMediasFromNASA()` interceptait l'erreur avec un `.catch()` qui faisait uniquement `console.error(...)`. La promesse devenait alors résolue avec `undefined`. Dans `Home`, l'expression `medias || []` transformait cette valeur en liste vide : le composant ne pouvait plus distinguer une erreur API d'une recherche vide.
+
+**Solution.** Le service laisse désormais l'erreur remonter vers `Home`. Le composant peut ainsi renseigner son état `error` et afficher le message adapté, distinct de l'état de chargement et de l'absence réelle de résultats.
+
 ## Pourquoi React et Vite ?
 React construit l’interface avec des composants réutilisables et met à jour les pages quand les données changent, par exemple après une recherche ou quand on ajoute un favori.
 
 Vite sert à lancer le projet rapidement pendant le développement, puis à préparer les fichiers pour le déploiement.
-### Avant la presentation orale nous etions au pallier 3 et apres la presentation orale nous avons continuer avec le pallier 4 
+### Après la présentation orale, nous avons poursuivi les paliers 4 et 5.
 
 ## 🧩 Palier 1 : La galerie
 
@@ -90,20 +137,39 @@ Les sept tests vérifient que les données NASA sont bien préparées, que les s
 
 ---
 
+## 🎨 Palier 5 : le commissaire d'exposition
+
+L'utilisateur peut composer une exposition personnelle à partir des médias de la galerie ou de leurs fiches. Chaque exposition est conservée dans le navigateur et peut être partagée par un lien.
+
+### Réalisé
+
+* création, renommage et suppression d'expositions ;
+* ajout d'un média depuis la galerie ou sa fiche, dans une exposition choisie ;
+* retrait des médias et changement de leur ordre ;
+* texte de présentation de l'exposition et commentaire pour chaque média ;
+* conservation des expositions dans le navigateur avec `localStorage` ;
+* lien de partage : son ouverture dans un autre navigateur reconstruit la même exposition.
+
+### Points techniques
+
+* `src/services/expositions.js` centralise la création, la mise à jour, la suppression et la persistance des expositions.
+* `AddToExpositionModal` permet de choisir clairement l'exposition avant d'y ajouter un média.
+* La page de détail d'une exposition regroupe l'édition du texte, les commentaires et le changement d'ordre des médias.
+
+---
+
 ## 🚀 Comment lancer le projet
 
 ```bash
-# 1. Installer les modules
 npm install
-
-# 2. Démarrer le serveur local
 npm run dev
 
-# 3. Vérifier la propreté du code (ESLint)
+# Vérifier la propreté du code (ESLint)
 npm run lint
 
-# 4. Lancer tous les tests Vitest une fois
-npm test
+# Lancer tous les tests Vitest une fois
+npm run test
+npm run build
 ```
 
 L'application est disponible sur : **http://localhost:5173/**
@@ -127,4 +193,7 @@ npx vitest
 * `src/components/salleDetail.jsx` : médias et frise chronologique d’une salle.
 * `src/data/salles.js` : noms, courtes descriptions et recherches NASA associées aux salles.
 * `src/pages/favoris.jsx` : liste des médias favoris enregistrés.
+* `src/pages/expositions.jsx` : liste et suppression des expositions personnelles.
+* `src/pages/expositionDetail.jsx` : édition d'une exposition et de ses médias.
+* `src/services/expositions.js` : création, mise à jour et persistance des expositions.
 * `src/components/` : éléments visuels réutilisables de l’application.
