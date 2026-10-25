@@ -7,9 +7,9 @@ export default function HeaderTop () {
             <nav>
                 <strong><Landmark aria-hidden="true" className="brand-icon" />Le Louvre 404</strong>
                 <NavLink to="/" end>Acceuil</NavLink>
-                <NavLink to="/salles">Salles d'exposition</NavLink>       
-                <NavLink to="/favoris">Favoris</NavLink>
-                       
+                <NavLink to="/salles">Salles Thématiques</NavLink> 
+                <NavLink to="/expositions">Mes Expositions</NavLink>
+                <NavLink to="/favoris">Favoris</NavLink>         
             </nav>
         </header>
     )

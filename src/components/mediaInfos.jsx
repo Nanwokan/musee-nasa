@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { getAssetMedia, getPlayableMediaUrl } from "../services/nasaApi";
+import AddToExpositionButton from "./addToExpositionButton";
 
 export default function MediaInfos({ media }) {
   const [imageUrl, setImageUrl] = useState("");
@@ -88,6 +89,7 @@ export default function MediaInfos({ media }) {
         <h5 className="type-media">Type : {media.mediaType}</h5>
         <h5 className="center-media">Centre : {media.center}</h5>
         <p className="description-media">{media.description}</p>
+        <AddToExpositionButton media={media} />
         {
           // Chaque mot-clé permet de lancer une nouvelle recherche sur ce thème.
           media.keywords.map((keyword) => {

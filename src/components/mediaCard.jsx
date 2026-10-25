@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import FavoriteButton from "./favoriteButton";
+import AddToExpositionButton from "./addToExpositionButton";
 // Palier 1 : Carte d'un média
 // Attendus respectés :
 // - vignette (thumbUrl)
@@ -18,6 +19,7 @@ export default function MediaCard({ media, onFavoriteChange }) {
                 </div>            
             </Link>
             <FavoriteButton media={media} onToggle={onFavoriteChange} />
+            <AddToExpositionButton media={media} />
         </li>
   );
 }

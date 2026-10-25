@@ -7,6 +7,10 @@ import Favoris from "./pages/favoris";
 import ErrorPage from "./pages/errorPage";
 import Salles from "./pages/salles";
 import SalleDetail from "./pages/salleDetail";
+import Expositions from "./pages/expositions";
+import ExpositionDetail from "./pages/expositionDetail";
+import CreateExposition from "./pages/createExposition";
+import SharedExposition from "./pages/sharedExposition";
 
 
 function App() {
@@ -25,6 +29,10 @@ function App() {
               />
             }/>
           <Route path="*" element={<ErrorPage />} />
+          <Route path="/expositions" element={<Expositions/>} />
+          <Route path="/expositions/:id" element={<ExpositionDetail/>} />
+          <Route path="/expositions/create" element={<CreateExposition/>} />
+          <Route path="/expositions/partage" element={<SharedExposition/>} />
         </Routes>
       </main>
     </>
