@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router";
 import { getAssetMedia, getPlayableMediaUrl } from "../services/nasaApi";
 
 export default function MediaInfos({ media }) {
-
   const [imageUrl, setImageUrl] = useState("");
 
   const navigate = useNavigate();
@@ -56,10 +55,10 @@ export default function MediaInfos({ media }) {
       {}
       {media.mediaType === "image" ? (
         <img
-  className="img-media"
-  src={imageUrl || media.thumbUrl}
-  alt={media.title}
-/>
+          className="img-media"
+          src={imageUrl || media.thumbUrl}
+          alt={media.title}
+        />
       ) : currentPlayer?.url && media.mediaType === "video" ? (
         // controls affiche les commandes de lecture ; poster montre la vignette avant le démarrage.
         <video
@@ -90,10 +89,19 @@ export default function MediaInfos({ media }) {
         <h5 className="center-media">Centre : {media.center}</h5>
         <p className="description-media">{media.description}</p>
         {
-            // Chaque mot-clé permet de lancer une nouvelle recherche sur ce thème.
-            media.keywords.map((keyword)=>
-              (<button key={keyword} onClick={()=> navigate(`/?q=${keyword}`)}>{keyword}</button>)
-            )
+          // Chaque mot-clé permet de lancer une nouvelle recherche sur ce thème.
+          media.keywords.map((keyword) => {
+            const params = new URLSearchParams({ q: keyword });
+
+            return (
+              <button
+                key={keyword}
+                onClick={() => navigate(`/?${params.toString()}`)}
+              >
+                {keyword}
+              </button>
+            );
+          })
         }
       </div>
     </section>

@@ -66,10 +66,9 @@ export function getAssetMedia(media) {
           return href && /\.(jpg|jpeg|png)$/i.test(href.split("?")[0]);
         });
 
-      const largeImage = files.find((href) => href.includes("~large."));
       const mediumImage = files.find((href) => href.includes("~medium."));
 
-      return largeImage || mediumImage || media.thumbUrl;
+      return mediumImage || media.thumbUrl;
     });
 }
 

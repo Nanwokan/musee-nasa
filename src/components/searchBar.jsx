@@ -2,8 +2,8 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 
 // Palier 1 : Composant de recherche permettant de changer le thème de la galerie
-export default function SearchBar({ onSearch }) {
-  const [recherche, setRecherche] = useState("");
+export default function SearchBar({ value, onSearch }) {
+  const [recherche, setRecherche] = useState(value);
 
   function handleSearchSubmit(event) {
     event.preventDefault();

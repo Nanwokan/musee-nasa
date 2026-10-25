@@ -45,6 +45,15 @@ export default function Home() {
     const newParams = new URLSearchParams(searchParams);
 
     newParams.set(name, value);
+    newParams.set("page", "1");
+
+    loadWithParams(newParams);
+  }
+
+  function updateSearch(recherche) {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("q", recherche);
+    newParams.set("page", "1");
 
     loadWithParams(newParams);
   }
@@ -68,16 +77,16 @@ export default function Home() {
 
   return (
     <>
-      {/* Palier 1 : Champ de recherche pour changer le thème de la galerie */}
-      <SearchBar onSearch={(recherche) => loadWithParams({ q: recherche })} />
+      <SearchBar key={q} value={q} onSearch={updateSearch} />
       <Filtres
+        type={type}
+        startYear={startYear}
+        endYear={endYear}
         onTypeChange={(value) => updateFilter("media_type", value)}
         onStartYearChange={(value) => updateFilter("year_start", value)}
         onEndYearChange={(value) => updateFilter("year_end", value)}
       />
 
-      {/* Palier 1 : L'utilisateur sait toujours ce qui se passe */}
-      {/* 1. Chargement en cours */}
       {isLoading && (
         <div className="state">
           <div className="spinner"></div>
@@ -85,24 +94,18 @@ export default function Home() {
         </div>
       )}
 
-      {/* 2. Erreur de l'API :
-          !isLoading = le chargement est terminé
-          error = il y a un message d'erreur (ex: coupure réseau ou problème côté NASA)
-          Si ces 2 conditions sont vraies, on affiche le message d'erreur en rouge (classe CSS state--error) */}
       {!isLoading && error && (
         <div className="state state--error">
           <p>{error}</p>
         </div>
       )}
 
-      {/* 3. Recherche sans résultat */}
       {!isLoading && !error && listeDeMedias.length === 0 && (
         <div className="state">
           <p>Aucun média trouvé pour cette recherche.</p>
         </div>
       )}
 
-      {/* 4. Affichage de la galerie et de la pagination lorsque les résultats sont là */}
       {!isLoading && !error && listeDeMedias.length > 0 && (
         <>
           <Galerie medias={currentMedias} />
